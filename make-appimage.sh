@@ -11,6 +11,7 @@ export UPINFO="gh-releases-zsync|${GITHUB_REPOSITORY%/*}|${GITHUB_REPOSITORY#*/}
 export DEPLOY_PULSE=1
 export DEPLOY_OPENGL=1
 export DEPLOY_VULKAN=1
+export DEPLOY_P11KIT=1
 
 # Deploy dependencies
 quick-sharun ./AppDir/bin/* /usr/lib/libappindicator3.so*
