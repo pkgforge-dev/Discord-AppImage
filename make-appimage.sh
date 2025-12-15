@@ -14,7 +14,12 @@ export DEPLOY_VULKAN=1
 export DEPLOY_P11KIT=1
 
 # Deploy dependencies
-quick-sharun ./AppDir/bin/* /usr/lib/libappindicator3.so*
+quick-sharun \
+	./AppDir/bin/*            \
+	/usr/lib/libva.so*        \
+	/usr/lib/libpci.so*       \
+	/usr/lib/libsoftokn3.so*  \
+	/usr/lib/libappindicator3.so*
 
 # Additional changes can be done in between here
 
