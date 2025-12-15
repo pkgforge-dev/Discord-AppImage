@@ -4,6 +4,7 @@ set -eu
 
 ARCH=$(uname -m)
 VERSION=$(pacman -Q discord | awk '{print $2; exit}') # example command to get version of application here
+VERSION=${VERSION#*:}
 export ARCH VERSION
 export OUTPATH=./dist
 export ADD_HOOKS="self-updater.bg.hook:fix-namespaces.hook"
@@ -17,7 +18,9 @@ export DEPLOY_P11KIT=1
 quick-sharun \
 	./AppDir/bin/*            \
 	/usr/lib/libva.so*        \
+	/usr/lib/libva-drm.so*    \
 	/usr/lib/libpci.so*       \
+	/usr/lib/libnss*.so*      \
 	/usr/lib/libsoftokn3.so*  \
 	/usr/lib/libappindicator3.so*
 
