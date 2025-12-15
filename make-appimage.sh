@@ -16,12 +16,13 @@ export DEPLOY_P11KIT=1
 
 # Deploy dependencies
 quick-sharun \
-	./AppDir/bin/*            \
-	/usr/lib/libva.so*        \
-	/usr/lib/libva-drm.so*    \
-	/usr/lib/libpci.so*       \
-	/usr/lib/libnss*.so*      \
-	/usr/lib/libsoftokn3.so*  \
+	./AppDir/bin/*              \
+	/usr/lib/libva.so*          \
+	/usr/lib/libva-drm.so*      \
+	/usr/lib/libpci.so*         \
+	/usr/lib/libnss*.so*        \
+	/usr/lib/libsoftokn3.so*    \
+	/usr/lib/libfreeblpriv3.so* \
 	/usr/lib/libappindicator3.so*
 
 # Additional changes can be done in between here
