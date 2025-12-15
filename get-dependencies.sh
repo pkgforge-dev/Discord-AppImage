@@ -15,4 +15,7 @@ get-debloated-pkgs --add-common --prefer-nano
 # Comment this out if you need an AUR package
 #make-aur-package PACKAGENAME
 
-# If the application needs to be manually built that has to be done down here
+mkdir -p ./AppDir/bin
+cp -rv /opt/discord/*               ./AppDir/bin
+cp -v  /opt/discord/discord.desktop ./AppDir
+cp -v  /opt/discord/discord.png     ./AppDir/.DirIcon
