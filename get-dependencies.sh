@@ -6,7 +6,7 @@ ARCH=$(uname -m)
 
 echo "Installing package dependencies..."
 echo "---------------------------------------------------------------"
-# pacman -Syu --noconfirm PACKAGESHERE
+pacman -Syu --noconfirm discord libappindicator-gtk3
 
 echo "Installing debloated packages..."
 echo "---------------------------------------------------------------"
