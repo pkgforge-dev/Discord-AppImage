@@ -11,8 +11,8 @@ if [ ! -f "$f" ]; then
 	echo "{}" > "$f"
 fi
 
-if ! grep -q 'SKIP_HOST_UPDATE' "$f"; then
-	_f=$(jq '.SKIP_HOST_UPDATE = true' "$f")
+if ! grep -q 'SKIP_HOST_UPDATE' "$f" \
+  && _f=$(jq '.SKIP_HOST_UPDATE = true' "$f"); then
 	echo "$_f" > "$f"
 	>&2 echo "Added 'SKIP_HOST_UPDATE = true' to $f"
 fi
