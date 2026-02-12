@@ -12,7 +12,6 @@ export UPINFO="gh-releases-zsync|${GITHUB_REPOSITORY%/*}|${GITHUB_REPOSITORY#*/}
 export DEPLOY_PULSE=1
 export DEPLOY_OPENGL=1
 export DEPLOY_VULKAN=1
-export ELECTRON_DISABLE_SANDBOX=1
 
 # Deploy dependencies
 quick-sharun \
