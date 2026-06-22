@@ -9,6 +9,8 @@ export ARCH VERSION
 export OUTPATH=./dist
 export ADD_HOOKS="self-updater.bg.hook:fix-namespaces.hook"
 export UPINFO="gh-releases-zsync|${GITHUB_REPOSITORY%/*}|${GITHUB_REPOSITORY#*/}|latest|*$ARCH.AppImage.zsync"
+export DESKTOP=/usr/share/applications/discord.desktop
+export ICON=/usr/share/icons/hicolor/256x256/apps/discord.png
 export DEPLOY_PULSE=1
 export DEPLOY_OPENGL=1
 export DEPLOY_VULKAN=1

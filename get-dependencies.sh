@@ -19,9 +19,19 @@ get-debloated-pkgs --add-common --prefer-nano intel-media-driver-mini
 # Comment this out if you need an AUR package
 #make-aur-package PACKAGENAME
 
-mkdir -p ./AppDir/bin
-cp -rv /opt/discord/*               ./AppDir/bin
-cp -v  /opt/discord/discord.desktop ./AppDir
-cp -v  /opt/discord/discord.png     ./AppDir/.DirIcon
+sed -i -e 's|/usr/bin/discord|Discord|g' /usr/share/applications/discord.desktop
 
-sed -i -e 's|/usr/bin/discord|Discord|g' ./AppDir/discord.desktop
+mkdir -p ./AppDir/bin
+
+# discord arch package now downloads the electron bundle in the user's home
+# the bootstrap script will downlaod discord and attempt to execute it which will fail
+/usr/bin/discord || :
+
+discord_exe=$(find "${XDG_CONFIG_HOME:-$HOME/.config}"/discord -type f -name Discord -print -quit)
+if [ ! -x "$discord_exe" ]; then
+	>&2 echo "Cannot find discord, download failed?"
+	exit 1
+fi
+discord_dir=${discord_exe%/*}
+mv -v "$discord_dir"/* ./AppDir/bin
+
