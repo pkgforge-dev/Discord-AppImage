@@ -19,9 +19,3 @@ get-debloated-pkgs --add-common --prefer-nano intel-media-driver-mini
 # Comment this out if you need an AUR package
 #make-aur-package PACKAGENAME
 
-mkdir -p ./AppDir/bin
-cp -rv /opt/discord/*               ./AppDir/bin
-cp -v  /opt/discord/discord.desktop ./AppDir
-cp -v  /opt/discord/discord.png     ./AppDir/.DirIcon
-
-sed -i -e 's|/usr/bin/discord|Discord|g' ./AppDir/discord.desktop
