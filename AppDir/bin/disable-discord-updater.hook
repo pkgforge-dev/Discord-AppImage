@@ -15,4 +15,21 @@ _disable_discord_updater() {
 	fi
 }
 
+_stage_native_modules() {
+	discord_ver=$(jq -r .version "$APPDIR"/bin/resources/build_info.json)
+	modules_dir=$CONFIGDIR/discord/$discord_ver/modules
+
+	rm -rf "$modules_dir"
+	mkdir -p "$modules_dir"
+
+	for d in "$APPDIR"/bin/modules/*/; do
+		if [ -d "$d" ]; then
+			ln -sf "$d" "$modules_dir"/"${d##*/}"
+		fi
+	done
+
+	cp -f "$APPDIR"/bin/modules/installed.json "$modules_dir"/installed.json
+}
+
 _disable_discord_updater || :
+_stage_native_modules || :
