@@ -17,8 +17,9 @@ export DEPLOY_VULKAN=1
 
 # Deploy dependencies
 quick-sharun \
-	./AppDir/bin/* \
-	/usr/bin/jq    \
+	./AppDir/bin/*         \
+	/usr/bin/jq            \
+	/usr/lib/libatomic.so* \
 	/usr/lib/libappindicator3.so*
 
 # Additional changes can be done in between here
