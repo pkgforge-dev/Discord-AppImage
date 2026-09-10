@@ -47,7 +47,7 @@ rm -rf "$TMP_MODS"
 mkdir -p "$TMP_MODS"
 INSTALLED_JSON='{}'
 
-for mod in discord_desktop_core discord_erlpack discord_spellcheck discord_utils discord_voice discord_zstd; do
+for mod in discord_desktop_core discord_erlpack discord_spellcheck discord_utils discord_voice discord_zstd discord_game_utils discord_krisp discord_rpc; do
 	mod_url=$(echo "$MANIFEST" | jq -r ".modules.\"$mod\".full.url")
 	mod_ver=$(echo "$MANIFEST" | jq -r ".modules.\"$mod\".full.module_version")
 	mkdir -p "$TMP_MODS"/"$mod"
@@ -58,6 +58,10 @@ for mod in discord_desktop_core discord_erlpack discord_spellcheck discord_utils
 		| jq --arg k "$mod" --arg v "$mod_ver" '.[$k] = {"installedVersion": ($v | tonumber)}')
 done
 rm -rf "$TMP_MODS"
+
+# Krisp fails to initialize if its KMS/logs directory is missing (or if it
+# cannot be created). Pre-create it, matching what Flathub does.
+mkdir -p "$MODULES_DIR"/discord_krisp/KMS/logs
 
 # Write installed.json so the hook can copy it into Discord's config dir
 echo "$INSTALLED_JSON" > "$MODULES_DIR"/installed.json
