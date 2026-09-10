@@ -19,12 +19,18 @@ _stage_native_modules() {
 	discord_ver=$(jq -r .version "$APPDIR"/bin/resources/build_info.json)
 	modules_dir=$CONFIGDIR/discord/$discord_ver/modules
 
-	rm -rf "$modules_dir"
 	mkdir -p "$modules_dir"
 
+	# Only refresh the symlinks to the bundled modules instead of wiping the
+	# whole modules dir. Deleting it also removes Discord's pending downloads
+	# while they may still be written to, which makes Discord crash with an
+	# uncaught ENOENT on modules/pending/<module>-<version>.zip.
 	for d in "$APPDIR"/bin/modules/*/; do
 		if [ -d "$d" ]; then
-			ln -sf "$d" "$modules_dir"/"${d##*/}"
+			mod=${d%/}
+			mod=${mod##*/}
+			rm -rf "$modules_dir"/"$mod"
+			ln -sf "$d" "$modules_dir"/"$mod"
 		fi
 	done
 
