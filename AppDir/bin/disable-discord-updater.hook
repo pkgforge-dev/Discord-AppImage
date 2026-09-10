@@ -27,7 +27,8 @@ _stage_native_modules() {
 	# uncaught ENOENT on modules/pending/<module>-<version>.zip.
 	for d in "$APPDIR"/bin/modules/*/; do
 		if [ -d "$d" ]; then
-			mod=${d##*/}
+			mod=${d%/}
+			mod=${mod##*/}
 			rm -rf "$modules_dir"/"$mod"
 			ln -sf "$d" "$modules_dir"/"$mod"
 		fi
