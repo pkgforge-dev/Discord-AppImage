@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# https://github.com/pkgforge-dev/Discord-AppImage/issues/17
+export NODE_PRESERVE_SYMLINKS=1
+
 _disable_discord_updater() {
 	f=$CONFIGDIR/discord/settings.json
 
