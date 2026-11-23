@@ -35,33 +35,34 @@ wget --header="User-Agent: Discord-Updater/1" \
 	-O - \
 	| brotli -d | tar xf - --strip-components=1 -C ./AppDir/bin
 
-# Download native modules into the AppImage itself (like NixOS)
-# Discord loads these .node addons at runtime via require() from
-# ~/.config/discord/<version>/modules/ -- the hook symlinks them there
+# The 1.0.170 bootstrap only registers the module paths the updater installs
+# into the (read-only inside the AppImage) mount, the legacy
+# ~/.config/discord/<version>/modules lookup is gone. Ship the modules as the
+# bootstrap's own standalone modules and turn the updater off, so the modules
+# are loaded straight from the AppImage.
+echo "Disabling the Discord updater..."
+jq '.disableUpdater = true | .standaloneModules = true' \
+	./AppDir/bin/resources/build_info.json \
+	> "${TMPDIR:-/tmp}"/discord-build_info.json
+mv "${TMPDIR:-/tmp}"/discord-build_info.json ./AppDir/bin/resources/build_info.json
+
 echo "Downloading native modules..."
-MODULES_DIR=./AppDir/bin/modules
+MODULES_DIR=./AppDir/bin/resources/standalone_modules
 mkdir -p "$MODULES_DIR"
 
-TMP_MODS=/tmp/discord-modules
+TMP_MODS=${TMPDIR:-/tmp}/discord-modules
 rm -rf "$TMP_MODS"
 mkdir -p "$TMP_MODS"
-INSTALLED_JSON='{}'
 
 for mod in discord_desktop_core discord_erlpack discord_spellcheck discord_utils discord_voice discord_zstd discord_game_utils discord_krisp discord_rpc; do
 	mod_url=$(echo "$MANIFEST" | jq -r ".modules.\"$mod\".full.url")
-	mod_ver=$(echo "$MANIFEST" | jq -r ".modules.\"$mod\".full.module_version")
 	mkdir -p "$TMP_MODS"/"$mod"
 	wget --header="User-Agent: Discord-Updater/1" "$mod_url" -O - \
 		| brotli -d | tar xf - --strip-components=1 -C "$TMP_MODS"/"$mod"
 	mv "$TMP_MODS"/"$mod" "$MODULES_DIR"/"$mod"
-	INSTALLED_JSON=$(echo "$INSTALLED_JSON" \
-		| jq --arg k "$mod" --arg v "$mod_ver" '.[$k] = {"installedVersion": ($v | tonumber)}')
 done
 rm -rf "$TMP_MODS"
 
 # Krisp fails to initialize if its KMS/logs directory is missing (or if it
 # cannot be created). Pre-create it, matching what Flathub does.
 mkdir -p "$MODULES_DIR"/discord_krisp/KMS/logs
-
-# Write installed.json so the hook can copy it into Discord's config dir
-echo "$INSTALLED_JSON" > "$MODULES_DIR"/installed.json
